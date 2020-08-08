@@ -10,44 +10,46 @@ import sqlite3
 
 # -t stands for target
 
-db = sqlite3.connect('music.db')
-c = db.cursor()
+class Manager:
+    def __init__(self, dbfile):
+        try:
+            self.db = sqlite3.connect(dbfile)
+            self.c = self.db.cursor()
+        except sqlite3.Error as error:
+            print(error)
+    def __del__(self):
+        self.db.close()
 
-def clean():
-    c.execute("""DROP TABLE IF EXISTS music""")
-    c.execute("""
-        CREATE TABLE music (
-        id INTEGER PRIMARY KEY,
-        path TEXT NOT NULL,
-        length INTEGER,
-        e INTEGER NOT NULL,
-        s INTEGER NOT NULL,
-        g INTEGER NOT NULL,
-        m INTEGER NOT NULL,
-        d INTEGER NOT NULL,
-        fix INTEGER
+    def clean(self):
+        self.c.execute("""DROP TABLE IF EXISTS music""")
+        self.c.execute("""
+            CREATE TABLE music (
+            id INTEGER PRIMARY KEY,
+            path TEXT NOT NULL,
+            length INTEGER,
+            e INTEGER NOT NULL,
+            s INTEGER NOT NULL,
+            g INTEGER NOT NULL,
+            m INTEGER NOT NULL,
+            d INTEGER NOT NULL,
+            fix INTEGER
+            )
+        """)
+
+    def add(self, path, length, e, s, g, m, d):
+        self.c.execute("""
+            INSERT INTO music
+            (path, length, e, s, g, m, d, fix)
+            values
+            (?, ?, ?, ?, ?, ?, ?, 0)""",
+            (path, length, e, s, g, m, d)
         )
-    """)
 
-def close():
-    db.close()
-
-
-
-def add(path, length, e, s, g, m, d):
-    c.execute("""
-        INSERT INTO music
-        (path, length, e, s, g, m, d, fix)
-        values
-        (?, ?, ?, ?, ?, ?, ?, 0)""",
-        (path, length, e, s, g, m, d)
-    )
-
-def defaultq(et, st, gt, mt, dt, amount):
-    c.execute("""
-        SELECT rowid, path, length
-        FROM music
-        ORDER BY (e - ?)*(e - ?) + (s - ?)*(s - ?) + (g - ?)*(g - ?) + (m - ?)*(m - ?) + (d - ?)*(d - ?); """,
-        (et, et, st, st, gt, gt, mt, mt, dt, dt)
-    )
-    return c.fetchmany(amount)
+    def defaultq(self, et, st, gt, mt, dt, amount):
+        self.c.execute("""
+            SELECT rowid, path, length
+            FROM music
+            ORDER BY (e - ?)*(e - ?) + (s - ?)*(s - ?) + (g - ?)*(g - ?) + (m - ?)*(m - ?) + (d - ?)*(d - ?); """,
+            (et, et, st, st, gt, gt, mt, mt, dt, dt)
+        )
+        return self.c.fetchmany(amount)

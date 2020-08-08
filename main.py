@@ -1,4 +1,6 @@
-import dbm
+from dbm import Manager
 
+dbpath = 'music.db'
 
-dbm.close()
+dbm = Manager(dbpath)
+del dbm
