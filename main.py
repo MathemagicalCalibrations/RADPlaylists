@@ -1,6 +1,6 @@
-from cfgm import cfg
-from dbm import Manager
+from cfg import cfg
+from mdm import MusicDataManager
 
 dbpath = cfg.get('path_settings', 'db_path')
-dbm = Manager(dbpath)
-del dbm
+mdm = MusicDataManager(dbpath)
+del mdm

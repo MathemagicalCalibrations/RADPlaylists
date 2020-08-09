@@ -10,7 +10,7 @@ import sqlite3
 
 # -t stands for target
 
-class Manager:
+class MusicDataManager:
     def __init__(self, dbfile):
         try:
             self.db = sqlite3.connect(dbfile)
