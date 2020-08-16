@@ -7,7 +7,8 @@ from pathlib import Path
 mdm = MusicDataManager(Path(cfg.get('path_settings', 'db_path')))
 dj = MusicPlayer(Path(cfg.get('path_settings', 'music_path')))
 
-queue = mdm.defaultq(1,1,1,1,1,5)
+queue = mdm.defaultq(1,4,1,1,1,2)
 
-dj.playsong(queue[1][1])
+dj.makelist(queue)
+dj.play()
 input()
