@@ -9,6 +9,6 @@ dj = MusicPlayer(Path(cfg.get('path_settings', 'music_path')))
 
 queue = mdm.defaultq(1,4,1,1,1,2)
 
-dj.makelist(queue)
+dj.setqueue(queue)
 dj.play()
 input()
