@@ -63,7 +63,7 @@ class MusicDataManager:
         except sqlite3.Error as e:
             print(e)
 
-    def reeval(self, id, e, s, g, m, d):
+    def update(self, id, e, s, g, m, d):
         try:
             self.c.execute("""
                 UPDATE music
@@ -87,7 +87,7 @@ class MusicDataManager:
         except sqlite3.Error as e:
             print(e)
 
-    def markedq(self):
+    def marked(self):
         try:
             self.c.execute("""
                 SELECT *
@@ -98,7 +98,7 @@ class MusicDataManager:
         except sqlite3.Error as e:
             print(e)
 
-    def defaultq(self, et, st, gt, mt, dt, amount):
+    def simpleq(self, et, st, gt, mt, dt, amount):
         try:
             self.c.execute("""
                 SELECT rowid, path, length
