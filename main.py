@@ -29,8 +29,10 @@ def index():
     return dj.getindex()
 
 def play(q = None):
-    if q != None:
-        dj.setqueue(q)
+    dj.setqueue(q)
+    dj.start()
+
+def restart():
     dj.start()
 
 def pause():
