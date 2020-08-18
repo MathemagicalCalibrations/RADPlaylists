@@ -17,8 +17,8 @@ class MusicPlayer:
         for song in queue:
             self._queue.append(self._folder / song[1])
 
-    def play(self, shift_index):
-        self._index += shift_index
+    def play(self, i = 1):
+        self._index += i
         if self._index < len(self._queue):
             self._player = vlc.MediaPlayer(self._queue[self._index])
             self._events = self._player.event_manager()
@@ -29,7 +29,7 @@ class MusicPlayer:
             print("The queue has ended. You can play it again or change it.")
 
     def done(self, a):
-        self.play(1)
+        self.play()
 
     def start(self):
         self._index = 0

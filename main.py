@@ -39,6 +39,6 @@ def pause():
 def stop():
     dj.stop()
 
-def skip():
+def skip(i = 1):
     dj.stop()
-    dj.play(1)
+    dj.play(i)
