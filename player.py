@@ -1,4 +1,5 @@
 import vlc
+from mutagen.mp3 import MP3
 
 class MusicPlayer:
     def __init__(self, folder):
@@ -17,13 +18,16 @@ class MusicPlayer:
         for song in queue:
             self._queue.append(self._folder / song[1])
 
+    def getlength(self, i):
+        audio = MP3(self._queue[i])
+        return int(audio.info.length)
+
     def play(self, i = 1):
         self._index += i
         if self._index < len(self._queue):
             self._player = vlc.MediaPlayer(self._queue[self._index])
             self._events = self._player.event_manager()
             self._events.event_attach(vlc.EventType.MediaPlayerEndReached, self.done)
-            print(self._player.get_length())
             self._player.play()
         else:
             print("The queue has ended. You can play it again or change it.")

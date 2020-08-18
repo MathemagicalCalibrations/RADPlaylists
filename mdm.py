@@ -27,7 +27,6 @@ class MusicDataManager:
                 CREATE TABLE music (
                 id INTEGER PRIMARY KEY,
                 path TEXT NOT NULL,
-                length INTEGER,
                 e INTEGER NOT NULL,
                 s INTEGER NOT NULL,
                 g INTEGER NOT NULL,
@@ -40,14 +39,14 @@ class MusicDataManager:
         except sqlite3.Error as e:
             print(e)
 
-    def add(self, path, length, e, s, g, m, d):
+    def add(self, path, e, s, g, m, d):
         try:
             self.c.execute("""
                 INSERT INTO music
-                (path, length, e, s, g, m, d, fix)
+                (path, e, s, g, m, d, fix)
                 VALUES
-                (?, ?, ?, ?, ?, ?, ?, 0)""",
-                (path, length, e, s, g, m, d)
+                (?, ?, ?, ?, ?, ?, 0)""",
+                (path, e, s, g, m, d)
             )
             self.db.commit()
         except sqlite3.Error as e:
@@ -101,7 +100,7 @@ class MusicDataManager:
     def simpleq(self, et, st, gt, mt, dt, amount):
         try:
             self.c.execute("""
-                SELECT rowid, path, length
+                SELECT rowid, path
                 FROM music
                 ORDER BY (e - ?)*(e - ?) + (s - ?)*(s - ?) + (g - ?)*(g - ?) + (m - ?)*(m - ?) + (d - ?)*(d - ?); """,
                 (et, et, st, st, gt, gt, mt, mt, dt, dt)

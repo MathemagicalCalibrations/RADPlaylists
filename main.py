@@ -19,8 +19,8 @@ def mark(id):
 def update(id, e, s, g, m, d):
     mdm.update(id, e, s, g, m, d)
 
-def addsong(path, length, e, s, g, m, d):
-    mdm.add(path, length, e, s, g, m, d)
+def addsong(path, e, s, g, m, d):
+    mdm.add(path, e, s, g, m, d)
 
 def deletesong(id):
     mdm.delete(id)
@@ -42,3 +42,8 @@ def stop():
 def skip(i = 1):
     dj.stop()
     dj.play(i)
+
+def length(i = None):
+    if i == None:
+        i = dj.getindex()
+    return dj.getlength(i)
