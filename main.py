@@ -31,7 +31,7 @@ def index():
 def play(q = None):
     if q != None:
         dj.setqueue(q)
-    dj.play()
+    dj.start()
 
 def pause():
     dj.pause()
@@ -41,4 +41,4 @@ def stop():
 
 def skip():
     dj.stop()
-    dj.next()
+    dj.play(1)
