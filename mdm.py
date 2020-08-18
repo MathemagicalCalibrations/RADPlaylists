@@ -9,6 +9,9 @@ import sqlite3
 # d- stands for danger
 
 # -t stands for target
+# -x stands for maximum
+# -n stands for minimum
+# -w stands for weight
 
 class MusicDataManager:
     def __init__(self, dbfile):
@@ -104,6 +107,30 @@ class MusicDataManager:
                 FROM music
                 ORDER BY (e - ?)*(e - ?) + (s - ?)*(s - ?) + (g - ?)*(g - ?) + (m - ?)*(m - ?) + (d - ?)*(d - ?); """,
                 (et, et, st, st, gt, gt, mt, mt, dt, dt)
+            )
+            return self.c.fetchmany(amount)
+        except sqlite3.Error as e:
+            print(e)
+
+    def queue(self, et, en, ex, ew, st, sn, sx, sw, gt, gn, gx, gw, mt, mn, mx, mw, dt, dn, dx, dw, amount):
+        try:
+            self.c.execute("""
+                SELECT *
+                FROM music
+                WHERE
+                e >= ? AND e <= ? AND
+                s >= ? AND s <= ? AND
+                g >= ? AND g <= ? AND
+                m >= ? AND m <= ? AND
+                d >= ? AND d <= ?
+                ORDER BY
+                (e - ?)*(e - ?)*? +
+                (s - ?)*(s - ?)*? +
+                (g - ?)*(g - ?)*? +
+                (m - ?)*(m - ?)*? +
+                (d - ?)*(d - ?)*?; """,
+                (en, ex, sn, sx, gn, gx, mn, mx, dn, dx,
+                et, et, ew, st, st, sw, gt, gt, gw, mt, mt, mw, dt, dt, dw)
             )
             return self.c.fetchmany(amount)
         except sqlite3.Error as e:
