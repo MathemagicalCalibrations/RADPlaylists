@@ -22,8 +22,8 @@ class MusicPlayer:
         audio = MP3(self._queue[i])
         return int(audio.info.length)
 
-    def play(self, i = 1):
-        self._index += i
+    def play(self, index_shift = 1):
+        self._index += index_shift
         if self._index < len(self._queue):
             self._player = vlc.MediaPlayer(self._queue[self._index])
             self._events = self._player.event_manager()
@@ -32,7 +32,7 @@ class MusicPlayer:
         else:
             print("The queue has ended. You can play it again or change it.")
 
-    def done(self, a):
+    def done(self, vlc_event):
         self.play()
 
     def start(self):

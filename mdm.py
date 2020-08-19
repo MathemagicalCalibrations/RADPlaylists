@@ -16,17 +16,17 @@ import sqlite3
 class MusicDataManager:
     def __init__(self, dbfile):
         try:
-            self.db = sqlite3.connect(dbfile)
-            self.c = self.db.cursor()
+            self._database = sqlite3.connect(dbfile)
+            self._cursor = self._database.cursor()
         except sqlite3.Error as error:
             print(error)
     def __del__(self):
-        self.db.close()
+        self._database.close()
 
     def clean(self):
         try:
-            self.c.execute("""DROP TABLE IF EXISTS music""")
-            self.c.execute("""
+            self._cursor.execute("""DROP TABLE IF EXISTS music""")
+            self._cursor.execute("""
                 CREATE TABLE music (
                 id INTEGER PRIMARY KEY,
                 path TEXT NOT NULL,
@@ -38,26 +38,26 @@ class MusicDataManager:
                 fix INTEGER
                 )
             """)
-            self.db.commit()
+            self._database.commit()
         except sqlite3.Error as e:
             print(e)
 
     def add(self, path, e, s, g, m, d):
         try:
-            self.c.execute("""
+            self._cursor.execute("""
                 INSERT INTO music
                 (path, e, s, g, m, d, fix)
                 VALUES
                 (?, ?, ?, ?, ?, ?, 0)""",
                 (path, e, s, g, m, d)
             )
-            self.db.commit()
+            self._database.commit()
         except sqlite3.Error as e:
             print(e)
 
     def delete(self, id):
         try:
-            self.c.execute("""
+            self._cursor.execute("""
                 DELETE FROM music
                 WHERE id = ?""",
                 (id, )
@@ -67,42 +67,42 @@ class MusicDataManager:
 
     def update(self, id, e, s, g, m, d):
         try:
-            self.c.execute("""
+            self._cursor.execute("""
                 UPDATE music
                 SET e = ?, s = ?, g = ?, m = ?, d = ?, fix = 0
                 WHERE id = ?""",
                 (e, s, g, m, d, id)
             )
-            self.db.commit()
+            self._database.commit()
         except sqlite3.Error as e:
             print(e)
 
     def mark(self, id):
         try:
-            self.c.execute("""
+            self._cursor.execute("""
                 UPDATE music
                 SET fix = 1
                 WHERE id = ?""",
                 (id, )
             )
-            self.db.commit()
+            self._database.commit()
         except sqlite3.Error as e:
             print(e)
 
     def marked(self):
         try:
-            self.c.execute("""
+            self._cursor.execute("""
                 SELECT *
                 FROM music
                 WHERE fix = 1
             """)
-            return self.c.fetchall()
+            return self._cursor.fetchall()
         except sqlite3.Error as e:
             print(e)
 
     def queue(self, et, en, ex, ew, st, sn, sx, sw, gt, gn, gx, gw, mt, mn, mx, mw, dt, dn, dx, dw, amount):
         try:
-            self.c.execute("""
+            self._cursor.execute("""
                 SELECT *
                 FROM music
                 WHERE
@@ -120,6 +120,6 @@ class MusicDataManager:
                 (en, ex, sn, sx, gn, gx, mn, mx, dn, dx,
                 et, et, ew, st, st, sw, gt, gt, gw, mt, mt, mw, dt, dt, dw)
             )
-            return self.c.fetchmany(amount)
+            return self._cursor.fetchmany(amount)
         except sqlite3.Error as e:
             print(e)
