@@ -8,19 +8,23 @@ mdm = MusicDataManager(Path(cfg.get('path_settings', 'db_path')))
 dj = MusicPlayer(Path(cfg.get('path_settings', 'music_path')))
 q = []
 
-def queue(amount, et, st, gt, mt, dt, en = 0, ex = 5, ew = 1, sn = 0, sx = 5, sw = 1, gn = 0, gx = 5, gw = 1, mn = 0, mx = 5, mw = 1, dn = 0, dx = 5, dw = 1):
+def writequeue(queue):
     global q
-    q = mdm.queue(et, en, ex, ew, st, sn, sx, sw, gt, gn, gx, gw, mt, mn, mx, mw, dt, dn, dx, dw, amount)
+    q = queue
+
+def queue(amount, et, st, gt, mt, dt, en = 0, ex = 5, ew = 1, sn = 0, sx = 5, sw = 1, gn = 0, gx = 5, gw = 1, mn = 0, mx = 5, mw = 1, dn = 0, dx = 5, dw = 1):
+    writequeue(mdm.queue(et, en, ex, ew, st, sn, sx, sw, gt, gn, gx, gw, mt, mn, mx, mw, dt, dn, dx, dw, amount))
 
 def marked():
-    global q
-    q = mdm.marked()
+    writequeue(q = mdm.marked())
 
 def getqueue():
     for song in q:
         print(song)
 
-def mark(id):
+def mark(id = None):
+    if id == None:
+        id = q[index()][0]
     mdm.mark(id)
 
 def update(id, e, s, g, m, d):
@@ -39,7 +43,7 @@ def deletesong(id):
 def index():
     return dj.getindex()
 
-def currentsong():
+def current():
     i = index()
     if i == None:
         print("No song is playing \n")
