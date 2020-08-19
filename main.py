@@ -34,11 +34,11 @@ def addsong(path, e, s, g, m, d):
     mdm.add(path, e, s, g, m, d)
 
 def deletesong(id):
-    confirm = input("Are you sure? (y/N)")
-    if confirm = 'y' or confirm = 'Y':
+    confirm = input("".join(("Are you sure you want to delete song entry #", str(id), "? (y/N) ")))
+    if confirm == 'y' or confirm == 'Y':
         mdm.delete(id)
     else:
-        print("Aborted \n")
+        print("Aborted")
 
 def index():
     return dj.getindex()
