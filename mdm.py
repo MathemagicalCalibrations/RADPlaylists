@@ -100,18 +100,6 @@ class MusicDataManager:
         except sqlite3.Error as e:
             print(e)
 
-    def simpleq(self, et, st, gt, mt, dt, amount):
-        try:
-            self.c.execute("""
-                SELECT rowid, path
-                FROM music
-                ORDER BY (e - ?)*(e - ?) + (s - ?)*(s - ?) + (g - ?)*(g - ?) + (m - ?)*(m - ?) + (d - ?)*(d - ?); """,
-                (et, et, st, st, gt, gt, mt, mt, dt, dt)
-            )
-            return self.c.fetchmany(amount)
-        except sqlite3.Error as e:
-            print(e)
-
     def queue(self, et, en, ex, ew, st, sn, sx, sw, gt, gn, gx, gw, mt, mn, mx, mw, dt, dn, dx, dw, amount):
         try:
             self.c.execute("""
