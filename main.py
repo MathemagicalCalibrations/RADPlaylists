@@ -6,17 +6,14 @@ from pathlib import Path
 
 mdm = MusicDataManager(Path(cfg.get('path_settings', 'db_path')))
 dj = MusicPlayer(Path(cfg.get('path_settings', 'music_path')))
-q = []
 
 def queue(amount, et, st, gt, mt, dt, en = 0, ex = 5, ew = 1, sn = 0, sx = 5, sw = 1, gn = 0, gx = 5, gw = 1, mn = 0, mx = 5, mw = 1, dn = 0, dx = 5, dw = 1):
-    q := mdm.queue(et, en, ex, ew, st, sn, sx, sw, gt, gn, gx, gw, mt, mn, mx, mw, dt, dn, dx, dw, amount)
+    return mdm.queue(et, en, ex, ew, st, sn, sx, sw, gt, gn, gx, gw, mt, mn, mx, mw, dt, dn, dx, dw, amount)
 
 def marked():
-    q := mdm.marked()
+    return mdm.marked()
 
-def mark(id = None):
-    if id == None:
-        id = dj.getindex()
+def mark(id):
     mdm.mark(id)
 
 def update(id, e, s, g, m, d):
@@ -31,7 +28,7 @@ def deletesong(id):
 def index():
     return dj.getindex()
 
-def play(q):
+def play(q = None):
     dj.setqueue(q)
     dj.start()
 
