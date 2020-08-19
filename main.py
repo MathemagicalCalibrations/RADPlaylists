@@ -67,6 +67,12 @@ def skip(i = 1):
     dj.stop()
     dj.play(i)
 
+def loop():
+    if dj.looptoggle():
+        print("Queue looping enabled")
+    else:
+        print("Queue looping disabled")
+
 def length(i = None):
     if i == None:
         i = dj.getindex()

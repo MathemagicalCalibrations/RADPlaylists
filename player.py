@@ -8,6 +8,7 @@ class MusicPlayer:
         self._index = None
         self._player = vlc.MediaPlayer()
         self._events = None
+        self._loop = False
         self._is_playing = False
 
     def getindex(self):
@@ -22,6 +23,17 @@ class MusicPlayer:
         audio = MP3(self._queue[i])
         return int(audio.info.length)
 
+    def looptoggle(self):
+        self._loop = not(self._loop)
+        return self._loop
+
+    def queuefinished():
+        if self._loop:
+            print("The queue has ended. Looping...")
+            start()
+        else:
+            print("The queue has ended. You can play it again or change it.")
+
     def play(self, index_shift = 1):
         self._index += index_shift
         if self._index < len(self._queue):
@@ -30,7 +42,7 @@ class MusicPlayer:
             self._events.event_attach(vlc.EventType.MediaPlayerEndReached, self.done)
             self._player.play()
         else:
-            print("The queue has ended. You can play it again or change it.")
+            self.queuefinished()
 
     def done(self, vlc_event):
         self.play()
