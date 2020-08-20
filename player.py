@@ -27,10 +27,10 @@ class MusicPlayer:
         self._loop = not(self._loop)
         return self._loop
 
-    def queuefinished():
+    def queuefinished(self):
         if self._loop:
             print("The queue has ended. Looping...")
-            start()
+            self.start()
         else:
             print("The queue has ended. You can play it again or change it.")
 
@@ -49,6 +49,7 @@ class MusicPlayer:
 
     def start(self):
         self._index = 0
+        self.stop()
         self.play(0)
 
     def pause(self):
